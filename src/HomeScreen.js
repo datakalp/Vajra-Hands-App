@@ -9,7 +9,7 @@ return(<div>
   {openCam==false &&
   <div style={{textAlign:"center", marginTop:"10%",border:"1px solid grey", marginLeft:"30%",
   marginRight:"30%",padding:"5%"}}>
-    <button style={{ fontSize:"25px",borderRadius:"5em"}} onClick={()=>setOpen(true)}>+</button>
+    <button style={{ fontSize:"30px",borderRadius:"5em"}} onClick={()=>setOpen(true)}>+</button>
     </div>
   }
 
