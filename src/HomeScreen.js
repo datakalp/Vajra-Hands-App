@@ -1,7 +1,5 @@
 
 import {React,useState} from 'react';
-import {Button} from '@material-ui/core';
-import {Add} from '@mui/icons-material';
 import RecordScreen from './RecordScreen';
 
 const HomeScreen=()=>{
@@ -11,7 +9,7 @@ return(<div>
   {openCam==false &&
   <div style={{textAlign:"center", marginTop:"10%",border:"1px solid grey", marginLeft:"30%",
   marginRight:"30%",padding:"5%"}}>
-    <Button style={{ fontSize:"25px",borderRadius:"5em"}} onClick={()=>setOpen(true)}><Add/></Button>
+    <button style={{ fontSize:"25px",borderRadius:"5em"}} onClick={()=>setOpen(true)}>+</button>
     </div>
   }
 
