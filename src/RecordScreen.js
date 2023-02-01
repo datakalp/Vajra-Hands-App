@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ReactMediaRecorder, useReactMediaRecorder } from 'react-media-recorder';
 import Video from './animation.mp4';
 import './RecordScreen.css';
+import {BsRecordCircleFill, BsFillPauseCircleFill, BsFillStopCircleFill , BsFillPlayCircleFill} from 'react-icons/bs'
+import {IoArrowRedoCircleSharp} from 'react-icons/io5'
 
 const RecordScreen = () => {
   const [permissionsGranted, setPermissionsGranted] = useState(false);//for camera permissions
@@ -61,14 +63,14 @@ const RecordScreen = () => {
                     pauseRecording();
                   }}
                   >
-                    Pause Recording
+                    <BsFillPauseCircleFill style={{color : "red"}}/>
                   </button>
                   <button onClick={() => {
                     animatedVideoRef.current.pause();
                     stopRecording();
                   }}
                   >
-                    Stop Recording
+                    <BsFillStopCircleFill style={{color : "red"}}/>
                   </button>
                 </div>
               ) : status === 'paused' ? (
@@ -78,14 +80,14 @@ const RecordScreen = () => {
                     resumeRecording();
                   }}
                   >
-                    Resume Recording
+                    <BsFillPlayCircleFill style={{color : "red"}}/>
                   </button>
                   <button onClick={() => {
                     animatedVideoRef.current.pause();
                     stopRecording();
                   }}
                   >
-                    Stop Recording
+                    <BsFillStopCircleFill style={{color : "red"}}/>
                   </button>
                 </div>
               ) : status === 'stopped' ? (
@@ -96,7 +98,7 @@ const RecordScreen = () => {
                     setRecording(true);
                   }}
                   >
-                    Re-record
+                    <IoArrowRedoCircleSharp style={{color : "red"}}/>
                   </button>
                 </div>
               ) : (
@@ -106,7 +108,8 @@ const RecordScreen = () => {
                     setRecording(true);
                   }}
                   >
-                    Start Recording
+                    <BsRecordCircleFill style={{color : "red"}}/>
+                    {/* Start Recording */}
                   </button>
                 </div>
               )}
@@ -116,7 +119,10 @@ const RecordScreen = () => {
              )}
           
               <div className="videos" style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
-                <VideoPreview stream={previewStream} controls />
+               { status === 'stopped' ? (
+                <video src={mediaBlobUrl} style={{width:"50%"}} controls/> ) :
+                (<VideoPreview stream={previewStream} controls />)
+               } 
                 <video ref={animatedVideoRef} src={Video} style={{width:"50%"}} controls />
               </div>
             </div>
