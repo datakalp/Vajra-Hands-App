@@ -4,7 +4,22 @@ import Video from './animation.mp4';
 import './RecordScreen.css';
 
 const RecordScreen = () => {
-  const [permissionsGranted, setPermissionsGranted] = useState(false);
+  const [permissionsGranted, setPermissionsGranted] = useState(false);//for camera permissions
+  const [counter, setCounter] = useState(0);//for countdown
+  const [recording, setRecording] = useState(false);//for starting recording after count down is finished
+
+  const { status, startRecording, stopRecording, pauseRecording, resumeRecording, previewStream, mediaBlobUrl } = useReactMediaRecorder({ video: true });
+
+  useEffect(() => {
+    if (counter > 0) {
+      setTimeout(() => setCounter(counter - 1), 1000);
+    } else if (counter === 0 && recording) {
+      animatedVideoRef.current.play();
+      startRecording();
+      setRecording(false);
+    }
+  }, [counter, recording]);
+
   const handleStartRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
@@ -13,6 +28,7 @@ const RecordScreen = () => {
       console.error(error);
     }
   };
+
   const animatedVideoRef = useRef(null);
 
   const VideoPreview = ({ stream }) => {
@@ -26,58 +42,90 @@ const RecordScreen = () => {
     if (!stream) {
       return null;
     }
-    return <video ref={videoRef} width={500} height={500} autoPlay controls />;
+    return <video ref={videoRef} style={{width: "50%"}} autoPlay controls />;
   };
 
-  const { status, startRecording, stopRecording, pauseRecording, resumeRecording, previewStream, mediaBlobUrl } = useReactMediaRecorder({ video: true });
-
   return (
-    <div>
+    <div className='RecordScreen'>
       {permissionsGranted ? (
-        <ReactMediaRecorder
-          video
-          render={({
-            status, startRecording, stopRecording, pauseRecording, resumeRecording, previewStream, mediaBlobUrl
-          }) => (
-            <div>
-              <p>{status}</p>
-              <button onClick={() => {
-                animatedVideoRef.current.play();
-                startRecording();
-              }}
-              >
-                Start Recording
-              </button>
-              <button onClick={() => {
-                animatedVideoRef.current.pause();
-                pauseRecording();
-              }}
-              >
-                Pause Recording
-              </button>
-              <button onClick={() => {
-                animatedVideoRef.current.play();
-                resumeRecording();
-              }}
-              >
-                Resume Recording
-              </button>
-              <button onClick={() => {
-                animatedVideoRef.current.pause();
-                stopRecording();
-              }}
-              >
-                Stop Recording
-              </button>
-              <div className="videos">
+        
+            <div className='MediaRecorder'>
+            <p>{status}</p>
+            {counter===0 ? (
+
+            <div className='buttons'>
+              {status === 'recording' ? (
+                <div>
+                  <button onClick={() => {
+                    animatedVideoRef.current.pause();
+                    pauseRecording();
+                  }}
+                  >
+                    Pause Recording
+                  </button>
+                  <button onClick={() => {
+                    animatedVideoRef.current.pause();
+                    stopRecording();
+                  }}
+                  >
+                    Stop Recording
+                  </button>
+                </div>
+              ) : status === 'paused' ? (
+                <div>
+                  <button onClick={() => {
+                    animatedVideoRef.current.play();
+                    resumeRecording();
+                  }}
+                  >
+                    Resume Recording
+                  </button>
+                  <button onClick={() => {
+                    animatedVideoRef.current.pause();
+                    stopRecording();
+                  }}
+                  >
+                    Stop Recording
+                  </button>
+                </div>
+              ) : status === 'stopped' ? (
+                <div>
+                  <button onClick={() => {
+                    animatedVideoRef.current.currentTime = 0;
+                    setCounter(3);
+                    setRecording(true);
+                  }}
+                  >
+                    Re-record
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <button onClick={() => {
+                    setCounter(3);
+                    setRecording(true);
+                  }}
+                  >
+                    Start Recording
+                  </button>
+                </div>
+              )}
+            </div>
+                ) : (
+                  <div>{counter}</div>
+             )}
+          
+              <div className="videos" style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
                 <VideoPreview stream={previewStream} controls />
-                <video ref={animatedVideoRef} src={Video} controls />
+                <video ref={animatedVideoRef} src={Video} style={{width:"50%"}} controls />
               </div>
             </div>
-          )}
-        />
+        
       ) : (
-        <button onClick={handleStartRecording}>Grant Permissions</button>
+        <div style={{textAlign:"center", marginTop:"10%",border:"1px solid grey", marginLeft:"30%",
+        marginRight:"30%",padding:"10%"}}>
+          <button style={{ fontSize:"30px",borderRadius:"5em"}} onClick={handleStartRecording}>Turn on my Camera</button>
+          </div>
       )}
     </div>
   );
