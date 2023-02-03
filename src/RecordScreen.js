@@ -6,32 +6,26 @@ import {BsRecordCircleFill, BsFillPauseCircleFill, BsFillStopCircleFill , BsFill
 import {IoArrowRedoCircleSharp} from 'react-icons/io5'
 
 const RecordScreen = () => {
-  const [permissionsGranted, setPermissionsGranted] = useState(false);//for camera permissions
+  const [permissionsGranted, setPermissionsGranted] = useState(true);//for camera permissions
   const [counter, setCounter] = useState(0);//for countdown
   const [recording, setRecording] = useState(false);//for starting recording after count down is finished
+  const [showCounter, setShowCounter] = useState(false);
 
-  const { status, startRecording, stopRecording, pauseRecording, resumeRecording, previewStream, mediaBlobUrl } = useReactMediaRecorder({ video: true });
+  const animatedVideoRef = useRef(null);
+
+  const { status, startRecording, stopRecording, pauseRecording, resumeRecording, previewStream, mediaBlobUrl } = useReactMediaRecorder({ video: true , askPermissionOnMount : true});
 
   useEffect(() => {
     if (counter > 0) {
       setTimeout(() => setCounter(counter - 1), 1000);
     } else if (counter === 0 && recording) {
+      setShowCounter(false);
       animatedVideoRef.current.play();
       startRecording();
       setRecording(false);
     }
   }, [counter, recording]);
 
-  const handleStartRecording = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      setPermissionsGranted(true);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const animatedVideoRef = useRef(null);
 
   const VideoPreview = ({ stream }) => {
     const videoRef = useRef(null);
@@ -44,7 +38,9 @@ const RecordScreen = () => {
     if (!stream) {
       return null;
     }
-    return <video ref={videoRef} style={{width: "50%"}} autoPlay controls />;
+    return (
+    <video ref={videoRef} style={{width: "50%"}} autoPlay />
+);
   };
 
   return (
@@ -52,20 +48,29 @@ const RecordScreen = () => {
       {permissionsGranted ? (
         
             <div className='MediaRecorder'>
-            <p>{status}</p>
-            {counter===0 ? (
-
-            <div className='buttons'>
+            <div style={{ display: 'flex', position: 'relative' }}>
+              
+             <div className="videos" style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
+             { status === 'stopped' ? (
+              <video src={mediaBlobUrl} style={{width:"50%"}} controls/> ) :
+              (<VideoPreview stream={previewStream}/>)
+             } 
+              <video ref={animatedVideoRef} src={Video} style={{width:"50%"}} controls />
+            </div>
+            <div className='square-box'>
+            </div>
+            <p style={{ position: 'absolute', top: 0, right: "93%", fontWeight: "bold", color: 'whitesmoke' }}>{status}</p>
+            <div className='buttons' style={{ position: 'absolute', top: "50%", right: "73%" }}>
               {status === 'recording' ? (
                 <div>
-                  <button onClick={() => {
+                  <button type='button' onClick={() => {
                     animatedVideoRef.current.pause();
                     pauseRecording();
                   }}
                   >
-                    <BsFillPauseCircleFill style={{color : "red"}}/>
+                    <BsFillPauseCircleFill />
                   </button>
-                  <button onClick={() => {
+                  <button type='button' onClick={() => {
                     animatedVideoRef.current.pause();
                     stopRecording();
                   }}
@@ -75,14 +80,14 @@ const RecordScreen = () => {
                 </div>
               ) : status === 'paused' ? (
                 <div>
-                  <button onClick={() => {
+                  <button type='button' onClick={() => {
                     animatedVideoRef.current.play();
                     resumeRecording();
                   }}
                   >
-                    <BsFillPlayCircleFill style={{color : "red"}}/>
+                    <BsFillPlayCircleFill />
                   </button>
-                  <button onClick={() => {
+                  <button type='button' onClick={() => {
                     animatedVideoRef.current.pause();
                     stopRecording();
                   }}
@@ -92,7 +97,7 @@ const RecordScreen = () => {
                 </div>
               ) : status === 'stopped' ? (
                 <div>
-                  <button onClick={() => {
+                  <button type='submit' onClick={() => {
                     animatedVideoRef.current.currentTime = 0;
                     setCounter(3);
                     setRecording(true);
@@ -103,34 +108,27 @@ const RecordScreen = () => {
                 </div>
               ) : (
                 <div>
-                  <button onClick={() => {
+                  {
+                    showCounter ? (<div className='counter'>{counter}</div>) : 
+                    (
+                  <button type='button' onClick={() => {
+                    setShowCounter(true);
                     setCounter(3);
                     setRecording(true);
                   }}
                   >
                     <BsRecordCircleFill style={{color : "red"}}/>
-                    {/* Start Recording */}
-                  </button>
+                  </button> )
+                  }
                 </div>
               )}
             </div>
-                ) : (
-                  <div>{counter}</div>
-             )}
-          
-              <div className="videos" style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
-               { status === 'stopped' ? (
-                <video src={mediaBlobUrl} style={{width:"50%"}} controls/> ) :
-                (<VideoPreview stream={previewStream} controls />)
-               } 
-                <video ref={animatedVideoRef} src={Video} style={{width:"50%"}} controls />
-              </div>
+            </div>
             </div>
         
       ) : (
         <div style={{textAlign:"center", marginTop:"10%",border:"1px solid grey", marginLeft:"30%",
         marginRight:"30%",padding:"10%"}}>
-          <button style={{ fontSize:"30px",borderRadius:"5em"}} onClick={handleStartRecording}>Turn on my Camera</button>
           </div>
       )}
     </div>
