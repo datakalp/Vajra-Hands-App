@@ -1,0 +1,71 @@
+.videos{
+   display: flex;
+   flex-direction: column;
+}
+.startAnalysingButton
+{
+width: 100%;
+text-align: center;
+padding: 1em;
+background-color:#0066cc;
+border: none;
+border-radius: 1em;
+color: white;
+cursor: pointer;
+box-shadow: 0 0 10px rgba(0,0,0,0.1);
+-webkit-transition-duration: 0.3s;
+transition-duration: 0.3s;
+-webkit-transition-property: box-shadow, transform;
+}
+
+
+.startAnalysingButton:hover {
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+ }
+
+ .videos {
+  display: 'flex';
+  justify-content: 'space-between';
+   flex-direction: 'row';
+ }
+
+ .recorder{
+    width: 40%;
+ }
+
+ .counter {
+   font-size: 3em;
+   color: whitesmoke;
+   font-weight: bold;
+ }
+
+ .square-box {
+   position: absolute;
+   top: 50%;
+   left: 25%;
+   transform: translate(-50%, -50%);
+   width: 25%;
+   height: 60%;
+   background-color: transparent;
+   border: 2px solid green;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+ }
+ 
+
+ button {
+   background: transparent;
+   border: none !important;
+   font-size: 3em;
+   border-radius: 50%;
+ }
+
+ button:hover {
+   box-shadow: 0 0 20px rgba(0,0,0,0.5);
+   -webkit-transform: scale(1.1);
+   transform: scale(1.1);
+}
+
