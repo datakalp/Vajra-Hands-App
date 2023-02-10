@@ -6,6 +6,8 @@ import {BsRecordCircleFill, BsFillPauseCircleFill, BsFillPlayCircleFill} from 'r
 import {IoArrowRedoCircleSharp} from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom';
 import Header from './Header';
+import * as tf from '@tensorflow/tfjs';
+import * as handpose from '@tensorflow-models/handpose';
 
 const RecordScreen = () => {
   const [permissionsGranted, setPermissionsGranted] = useState(true);//for camera permissions
@@ -13,8 +15,12 @@ const RecordScreen = () => {
   const [recording, setRecording] = useState(false);//for starting recording after count down is finished
   const [showCounter, setShowCounter] = useState(false);
   const [redo, setRedo] = useState(false);
+  const [handsVisible, setHandsVisible] = useState(false);
+
+
 
   const animatedVideoRef = useRef(null);
+  const videoRef = useRef(null);
 
   const navigate = useNavigate();
 
@@ -39,10 +45,40 @@ const RecordScreen = () => {
     }
   }, [status]);
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      detectHands(previewStream);
+    }, 1000);
+  
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [previewStream]);
+  
+
+  const detectHands = async (previewStream) => {
+    if (!videoRef.current) {
+      return;
+    }
+    videoRef.current.srcObject = previewStream;
+    const model = await handpose.load();
+    model.estimateHands(videoRef.current).then((hands) => {
+      if (hands.length > 0) {
+        setHandsVisible(true);
+      } else {
+        setHandsVisible(false);
+      }
+    });
+  };
+  
+  useEffect(() => {
+    detectHands(previewStream);
+  }, [previewStream]);
+  
+
+
 
   const VideoPreview = ({ stream }) => {
-    const videoRef = useRef(null);
-
     useEffect(() => {
       if (videoRef.current && stream) {
         videoRef.current.srcObject = stream;
@@ -61,13 +97,17 @@ const RecordScreen = () => {
       {
         showCounter ? (<div className='counter'>{counter}</div>) : 
         (
-      <button type='button' onClick={() => {
-        setShowCounter(true);
-        setCounter(3);
-        setRecording(true);
-        setRedo(false);
-      }}
-      >
+          <button type='button' onClick={() => {
+            if (handsVisible) {
+              setShowCounter(true);
+              setCounter(3);
+              setRecording(true);
+              setRedo(false);
+            } else {
+              alert("Please make sure your hands are visible in the video preview before starting the recording.");
+            }
+          }}
+          >
         <BsRecordCircleFill style={{color : "red"}}/>
       </button> )
       }
@@ -86,7 +126,7 @@ const RecordScreen = () => {
              } 
               <video ref={animatedVideoRef} src={Video} style={{width:"50%"}}/>
             </div>
-            <div className='square-box'>
+            <div className='square-box' style={{border : handsVisible ? "2px solid green" : "2px solid red"}}>
             </div>
             <p style={{ position: 'absolute', top: 0, right: "93%", fontWeight: "bold", color: 'whitesmoke' }}>{status}</p>
             <div className='buttons' style={{ position: 'absolute', top: "50%", right: "73%" }}>
