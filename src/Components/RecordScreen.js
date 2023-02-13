@@ -76,8 +76,6 @@ const RecordScreen = () => {
   }, [previewStream]);
   
 
-
-
   const VideoPreview = ({ stream }) => {
     useEffect(() => {
       if (videoRef.current && stream) {
@@ -121,12 +119,12 @@ const RecordScreen = () => {
           <div style={{ display: 'flex', position: 'relative' }}> 
              <div className="videos" style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
              { status === 'stopped' ? (
-              <video src={mediaBlobUrl} style={{width:"50%"}} controls/> ) :
+              <video src={mediaBlobUrl} style={{width:"50%"}} autoplay controls/> ) :
               (<VideoPreview stream={previewStream}/>)
              } 
               <video ref={animatedVideoRef} src={Video} style={{width:"50%"}}/>
             </div>
-            <div className='square-box' style={{border : handsVisible ? "2px solid green" : "2px solid red"}}>
+            <div className='square-box' style={{border : handsVisible ? "5px solid green" : "5px solid red"}}>
             </div>
             <p style={{ position: 'absolute', top: 0, right: "93%", fontWeight: "bold", color: 'whitesmoke' }}>{status}</p>
             <div className='buttons' style={{ position: 'absolute', top: "50%", right: "73%" }}>

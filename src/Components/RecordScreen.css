@@ -46,8 +46,8 @@ transition-duration: 0.3s;
    top: 50%;
    left: 25%;
    transform: translate(-50%, -50%);
-   width: 25%;
-   height: 60%;
+   width: 50%;
+   height: 100%;
    background-color: transparent;
    /* border: 2px solid red; */
    display: flex;
