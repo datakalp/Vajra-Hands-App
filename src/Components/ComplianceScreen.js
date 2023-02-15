@@ -13,11 +13,11 @@ const ComplianceScreen = () => {
     return (
         <div style={{width:"100%",   overflow:'hidden'}}>
             <Header/>
-            <div className="videos" style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row', height:'10%'}}>
+            <div className="videos" style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row', height:'70vh'}}>
                 <video src={location.state.mediaBlobUrl} style={{width:"50%"}} muted autoPlay controls/>
                 <video src={Video} style={{width:"50%"}} autoPlay controls/>
             </div>
-            <div className='results' style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
+            <div className='results' style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row', height:'15vh', marginTop:'2vh'}}>
                 <img src={step0done}/>
                 <img src={step0done}/>
                 <img src={step0done}/>
