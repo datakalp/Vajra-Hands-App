@@ -165,7 +165,7 @@ const RecordScreen = () => {
               )}
             </div>
         
-        <button onClick={()=>navigate("/ComplianceScreen", {state:{mediaBlobUrl}})} className='startAnalysingButton' style={{fontSize:"large", marginTop:"3vh", fontWeight:'bold'}}>Start Analysing</button>
+        <button disabled = {status==='stopped' ? false : true} onClick={()=>navigate("/ComplianceScreen", {state:{mediaBlobUrl}})} className='startAnalysingButton' style={{fontSize:"large", marginTop:"3vh", fontWeight:'bold'}}>Start Analysing</button>
       </div>
   );
 };
