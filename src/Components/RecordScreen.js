@@ -118,7 +118,7 @@ const RecordScreen = () => {
       <div className='MediaRecorder'>
           <Header/>
           <div style={{ display: 'flex', position: 'relative' }}> 
-             <div className="videos" style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
+             <div className="videos" style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row', height: '70vh'}}>
              { status === 'stopped' ? (
               <video src={mediaBlobUrl} style={{width:"50%"}} controls autoPlay/> ) :
               (<VideoPreview stream={previewStream}/>)
