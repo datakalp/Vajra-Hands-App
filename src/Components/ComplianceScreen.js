@@ -13,7 +13,7 @@ const ComplianceScreen = () => {
     return (
         <div style={{width:"100%",   overflow:'hidden'}}>
             <Header/>
-            <div className="videos" style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row', height:'70vh'}}>
+            <div className="videos" style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row', height:'70vh',  marginTop:'1vh'}}>
                 <video src={location.state.mediaBlobUrl} style={{width:"50%"}} muted autoPlay controls/>
                 <video src={Video} style={{width:"50%"}} autoPlay controls/>
             </div>
