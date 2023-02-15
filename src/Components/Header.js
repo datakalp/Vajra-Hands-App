@@ -7,8 +7,8 @@ const Header = () => {
 
             <div style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row', height:'10vh'}}>
                 <img src={Logo} style={{width:"10%", height:"100%"}}/>
-                <p style={{color:"darkgray", fontSize:"larger", fontWeight:"bold"}}>Vajra Hands</p>
-                <p style={{color:"darkgray", fontSize:"larger", fontWeight:"bold"}}>Duration</p>
+                <p style={{color:"darkgray", fontSize:"large", fontWeight:"bold"}}>Vajra Hands</p>
+                <p style={{color:"darkgray", fontSize:"large", fontWeight:"bold"}}>Duration</p>
             </div>
         );
     

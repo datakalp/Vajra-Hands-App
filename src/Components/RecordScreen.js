@@ -126,8 +126,8 @@ const RecordScreen = () => {
               <video ref={animatedVideoRef} src={Video} style={{width:"50%"}}/>
             </div>
             
-            <p style={{ position: 'absolute', top: "15%", right: "90%", fontWeight: "bold", color: 'whitesmoke' }}>{status}</p>
-            <div className='buttons' style={{ position: 'absolute', top: "45%", right: "73%" }}>
+            <p style={{ position: 'absolute', top: "15%", right: "85%", fontWeight: "bold", color: 'black' }}>{status}</p>
+            <div className='buttons' style={{ position: 'absolute', top: "48%", right: "73%" }}>
               {status === 'recording' ? (
                 <div>
                   <button type='button' onClick={() => {
