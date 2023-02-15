@@ -114,21 +114,20 @@ const RecordScreen = () => {
   }
 
   return (
-    <div className='RecordScreen'>
       <div className='MediaRecorder'>
           <Header/>
-          <div style={{ display: 'flex', position: 'relative' }}> 
-             <div className="videos" style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row', height: '70vh'}}>
+             <div className="videos" style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row', height: '70vh', marginTop:'1vh'}}>
+             <div className='square-box' style={{border : handsVisible ? "5px solid green" : "5px solid red"}}>
+             </div>
              { status === 'stopped' ? (
               <video src={mediaBlobUrl} style={{width:"50%"}} controls autoPlay/> ) :
               (<VideoPreview stream={previewStream}/>)
              } 
               <video ref={animatedVideoRef} src={Video} style={{width:"50%"}}/>
             </div>
-            <div className='square-box' style={{border : handsVisible ? "5px solid green" : "5px solid red"}}>
-            </div>
-            <p style={{ position: 'absolute', top: 0, right: "93%", fontWeight: "bold", color: 'whitesmoke' }}>{status}</p>
-            <div className='buttons' style={{ position: 'absolute', top: "50%", right: "73%" }}>
+            
+            <p style={{ position: 'absolute', top: "15%", right: "90%", fontWeight: "bold", color: 'whitesmoke' }}>{status}</p>
+            <div className='buttons' style={{ position: 'absolute', top: "45%", right: "73%" }}>
               {status === 'recording' ? (
                 <div>
                   <button type='button' onClick={() => {
@@ -165,10 +164,9 @@ const RecordScreen = () => {
                 <Start/>
               )}
             </div>
-        </div>
-        <button onClick={()=>navigate("/ComplianceScreen", {state:{mediaBlobUrl}})} className='startAnalysingButton' style={{fontSize:"smaller", marginTop:"1%", fontWeight:'bold'}}>Start Analysing</button>
+        
+        <button onClick={()=>navigate("/ComplianceScreen", {state:{mediaBlobUrl}})} className='startAnalysingButton' style={{fontSize:"large", marginTop:"3vh", fontWeight:'bold'}}>Start Analysing</button>
       </div>
-    </div>
   );
 };
 
