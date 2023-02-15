@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import * as tf from '@tensorflow/tfjs';
 import * as handpose from '@tensorflow-models/handpose';
+import ComplianceScreen from './ComplianceScreen';
 
 const RecordScreen = () => {
   const [permissionsGranted, setPermissionsGranted] = useState(true);//for camera permissions
@@ -119,7 +120,7 @@ const RecordScreen = () => {
           <div style={{ display: 'flex', position: 'relative' }}> 
              <div className="videos" style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
              { status === 'stopped' ? (
-              <video src={mediaBlobUrl} style={{width:"50%"}} autoplay controls/> ) :
+              <video src={mediaBlobUrl} style={{width:"50%"}} controls autoPlay/> ) :
               (<VideoPreview stream={previewStream}/>)
              } 
               <video ref={animatedVideoRef} src={Video} style={{width:"50%"}}/>
@@ -165,7 +166,7 @@ const RecordScreen = () => {
               )}
             </div>
         </div>
-        <button className='startAnalysingButton' style={{fontSize:"smaller", marginTop:"1%", fontWeight:'bold'}}>Start Analysing</button>
+        <button onClick={()=>navigate("/ComplianceScreen", {state:{mediaBlobUrl}})} className='startAnalysingButton' style={{fontSize:"smaller", marginTop:"1%", fontWeight:'bold'}}>Start Analysing</button>
       </div>
     </div>
   );
