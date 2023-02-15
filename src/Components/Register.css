@@ -13,7 +13,7 @@
  }
  
  .form{
-    width: 50%;
+    width: 80%;
     height: 80%;
     position: relative;
     border-radius: 1em;
@@ -21,29 +21,22 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-evenly;
  }
  
- img{
-    width: 40%;
- }
- select{
-    /* font-size: larger; */
+ .logo{
     width: 80%;
-    padding: 1em;
-    background-color: #d6cfcfab;
-    border: none;
  }
  
  input {
-    /* font-size: larger; */
+    font-size: 3em;
     width: 80%;
     padding: 1em;
     background-color: #d6cfcfab;
     border: none;
  }
- button{
-    /* font-size: larger; */
+ .RegisterButton{
+
     width: 80%;
     text-align: center;
     padding: 1em;
@@ -52,16 +45,7 @@
     border-radius: 1em;
     color: white;
     cursor: pointer;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-    -webkit-transition-property: box-shadow, transform;
- }
- 
- button:hover {
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
+
  }
  
  

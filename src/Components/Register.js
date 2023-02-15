@@ -4,17 +4,14 @@ import "./Register.css"
 
 
 const Register = () => {
-
-
-    
     return (
         <div className="Register">
 
         <div className="form">
 
-            <img src={Logo} />
+            <img className='logo' src={Logo} />
             <input type="text" placeholder="Username" />
-            <button type="submit" background>REGISTER</button>
+            <button className='RegisterButton' type="submit" style={{backgroundColor:'#0066cc'}}>REGISTER</button>
           </div>
       </div>
     );
