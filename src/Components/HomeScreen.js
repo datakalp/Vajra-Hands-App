@@ -10,9 +10,9 @@ const HomeScreen=()=>{
 
 return(
 
-  <div style={{textAlign:"center", marginTop:"10%",border:"1px solid grey", marginLeft:"30%",
-  marginRight:"30%",padding:"10%"}}>
-    <button onClick={()=>navigate("/RecordScreen")}><AiOutlineVideoCameraAdd/></button>
+  <div style={{textAlign:"center", marginTop:"20%",border:"1px solid grey", marginLeft:"15%",
+  marginRight:"15%",padding:"20%"}}>
+    <button onClick={()=>navigate("/RecordScreen")} style={{fontSize: "6em"}}><AiOutlineVideoCameraAdd/></button>
     </div>
  
  

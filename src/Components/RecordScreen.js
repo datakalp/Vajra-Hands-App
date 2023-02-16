@@ -120,7 +120,7 @@ const RecordScreen = () => {
              <div className='square-box' style={{border : handsVisible ? "5px solid green" : "5px solid red"}}>
              </div>
              { status === 'stopped' ? (
-              <video src={mediaBlobUrl} style={{width:"50%"}} controls autoPlay/> ) :
+              <video src={mediaBlobUrl} style={{width:"50%"}} controls autoPlay muted/> ) :
               (<VideoPreview stream={previewStream}/>)
              } 
               <video ref={animatedVideoRef} src={Video} style={{width:"50%"}}/>
