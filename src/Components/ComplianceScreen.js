@@ -31,7 +31,15 @@ import step6ongoing from './Resources/Feedback/Missed_step_0_initial_rinse.png';
 import step7ongoing from './Resources/Feedback/Missed_step_0_initial_rinse.png';
 import step8ongoing from './Resources/Feedback/Missed_step_0_initial_rinse.png';
 
-import stepUnseenImage from './Resources/Feedback/Question_step_0_initial_rinse.png';
+import step0notVisible from './Resources/Feedback/Question_step_0_initial_rinse.png';
+import step1notVisible from './Resources/Feedback/Question_step_1_take_soap.png';
+import step2notVisible from './Resources/Feedback/Question_step_0_initial_rinse.png';
+import step3notVisible from './Resources/Feedback/Question_step_0_initial_rinse.png';
+import step4notVisible from './Resources/Feedback/Question_step_0_initial_rinse.png';
+import step5notVisible from './Resources/Feedback/Question_step_0_initial_rinse.png';
+import step6notVisible from './Resources/Feedback/Question_step_0_initial_rinse.png';
+import step7notVisible from './Resources/Feedback/Question_step_0_initial_rinse.png';
+import step8notVisible from './Resources/Feedback/Question_step_0_initial_rinse.png';
 
 import { useLocation } from 'react-router-dom';
 import "./ComplianceScreen.css";
@@ -64,7 +72,27 @@ const ComplianceScreen = () => {
   ];
 
   const stepOngoingImages = [
+    step0ongoing,
+    step1ongoing,
+    step2ongoing,
+    step3ongoing,
+    step4ongoing,
+    step5ongoing,
+    step6ongoing,
+    step7ongoing,
+    step8ongoing
+  ]
 
+  const stepNotVisibleImages = [
+    step0notVisible,
+    step1notVisible,
+    step2notVisible,
+    step3notVisible,
+    step4notVisible,
+    step5notVisible,
+    step6notVisible,
+    step7notVisible,
+    step8notVisible
   ]
 
   function VideoStepFeedback({ video }) {
@@ -111,7 +139,7 @@ const ComplianceScreen = () => {
     }, []);
   
     function updateStep(step) {
-      const feedbackOptions = ['Correct', 'Incorrect'];
+      const feedbackOptions = ['Correct', 'Incorrect', 'NotVisible'];
       const feedback = feedbackOptions[Math.floor(Math.random() * feedbackOptions.length)];
       setSteps(prevSteps => {
         const stepInfo = prevSteps.get(step);
@@ -122,7 +150,7 @@ const ComplianceScreen = () => {
     return (
         <div className='results' style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row', height:'15vh', marginTop:'2vh'}}>
         {[...steps].map(([step, { feedback }]) => (
-          <img key={step} src={feedback === 'Correct' ? stepCorrectImages[step] : feedback === 'Incorrect' ? stepIncorrectImages[step] : stepUnseenImage} />
+         <img key={step} src={feedback === 'Correct' ? stepCorrectImages[step] : feedback === 'Incorrect' ? stepIncorrectImages[step] : feedback === 'NotVisible' ? stepNotVisibleImages[step] : stepOngoingImages[step]} />
         ))}
       </div>
     );
