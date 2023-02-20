@@ -27,6 +27,20 @@ const RecordScreen = () => {
 
   const { status, startRecording, stopRecording, pauseRecording, resumeRecording, previewStream, mediaBlobUrl } = useReactMediaRecorder({ video: true , askPermissionOnMount : true});
 
+  useEffect (() => {
+    // Lock the screen orientation to landscape when the component mounts
+    if (window.screen.orientation) {
+      window.screen.orientation.lock("landscape")
+        .then(() => {
+          console.log("Screen orientation locked to landscape");
+        })
+        .catch((error) => {
+          console.error("Failed to lock screen orientation: ", error);
+        });
+    }
+  },[]);
+
+
   useEffect(() => {
     if (counter > 0) {
       setTimeout(() => setCounter(counter - 1), 1000);

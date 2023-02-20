@@ -10,6 +10,7 @@ const Register = () => {
 
     function handleRegister() {
 
+        alert("Successfully Registered!\nUsername and Password are sent to your email id")
         navigate("/Login");
     }
 
