@@ -17,7 +17,7 @@ const RecordScreen = () => {
   const [showCounter, setShowCounter] = useState(false);
   const [redo, setRedo] = useState(false);
   const [handsVisible, setHandsVisible] = useState(false);
-
+  const intervalRef = useRef(null);
 
 
   const animatedVideoRef = useRef(null);
@@ -54,21 +54,33 @@ const RecordScreen = () => {
 
   useEffect(() => {
     if (status === 'recording') {
+      clearInterval(intervalRef.current);
       animatedVideoRef.current.onended = () => {
         stopRecording();
       };
+    } else {
+      intervalRef.current = setInterval(() => {
+        console.log("interval running")
+        detectHands(previewStream);
+      }, 1000);
     }
-  }, [status]);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      detectHands(previewStream);
-    }, 1000);
-  
     return () => {
-      clearInterval(intervalId);
+      clearInterval(intervalRef.current);
     };
-  }, [previewStream]);
+  }, [status, previewStream]);
+  
+
+  // useEffect(() => {
+  //   intervalRef.current = setInterval(() => {
+  //     console.log("interval running")
+  //     detectHands(previewStream);
+  //   }, 1000);
+  
+  //   return () => {
+  //     clearInterval(intervalRef.current);
+  //   };
+  // }, [status, intervalRef]); // Add intervalRef to dependencies array
+  
   
 
   const detectHands = async (previewStream) => {
@@ -86,9 +98,9 @@ const RecordScreen = () => {
     });
   };
   
-  useEffect(() => {
-    detectHands(previewStream);
-  }, [previewStream]);
+  // useEffect(() => {
+  //   detectHands(previewStream);
+  // }, [previewStream]);
   
 
   const VideoPreview = ({ stream }) => {
@@ -112,6 +124,7 @@ const RecordScreen = () => {
         (
           <button type='button' onClick={() => {
             if (handsVisible) {
+              clearInterval(intervalRef.current);
               setShowCounter(true);
               setCounter(3);
               setRecording(true);
@@ -137,7 +150,7 @@ const RecordScreen = () => {
               <video src={mediaBlobUrl} style={{width:"50%"}} controls autoPlay muted/> ) :
               (<VideoPreview stream={previewStream}/>)
              } 
-              <video ref={animatedVideoRef} src={Video} style={{width:"50%"}}/>
+              <video ref={animatedVideoRef} src={Video} style={{width:"50%"}} muted/>
             </div>
             
             <p style={{ position: 'absolute', top: "15%", right: "85%", fontWeight: "bold", color: 'black' }}>{status}</p>
