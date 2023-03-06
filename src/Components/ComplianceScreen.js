@@ -47,18 +47,20 @@ import "./ComplianceScreen.css";
 const ComplianceScreen = () => {
   const location = useLocation();
 
-  useEffect (() => {
-    // Lock the screen orientation to landscape when the component mounts
-    if (window.screen.orientation) {
-      window.screen.orientation.lock("landscape")
-        .then(() => {
-          console.log("Screen orientation locked to landscape");
-        })
-        .catch((error) => {
-          console.error("Failed to lock screen orientation: ", error);
-        });
-    }
-  },[]);
+  const results = location.state.results;
+
+  // useEffect (() => {
+  //   // Lock the screen orientation to landscape when the component mounts
+  //   if (window.screen.orientation) {
+  //     window.screen.orientation.lock("landscape")
+  //       .then(() => {
+  //         console.log("Screen orientation locked to landscape");
+  //       })
+  //       .catch((error) => {
+  //         console.error("Failed to lock screen orientation: ", error);
+  //       });
+  //   }
+  // },[]);
 
   const stepCorrectImages = [
     step0done,
@@ -152,8 +154,8 @@ const ComplianceScreen = () => {
     }, []);
   
     function updateStep(step) {
-      const feedbackOptions = ['Correct', 'Incorrect', 'NotVisible'];
-      const feedback = feedbackOptions[Math.floor(Math.random() * feedbackOptions.length)];
+      const results = location.state.results;
+      const feedback = results[step].value;
       setSteps(prevSteps => {
         const stepInfo = prevSteps.get(step);
         return new Map(prevSteps).set(step, { ...stepInfo, feedback });
@@ -163,7 +165,7 @@ const ComplianceScreen = () => {
     return (
         <div className='results' style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row', height:'15vh', marginTop:'2vh'}}>
         {[...steps].map(([step, { feedback }]) => (
-         <img key={step} src={feedback === 'Correct' ? stepCorrectImages[step] : feedback === 'Incorrect' ? stepIncorrectImages[step] : feedback === 'NotVisible' ? stepNotVisibleImages[step] : stepOngoingImages[step]} />
+         <img key={step} src={feedback === 'Step Followed Correctly' ? stepCorrectImages[step] : feedback === 'Step Not followed Correctly' ? stepIncorrectImages[step] : feedback === 'Hand not visible' ? stepNotVisibleImages[step] : stepOngoingImages[step]} />
         ))}
       </div>
     );

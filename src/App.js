@@ -1,13 +1,12 @@
 
-import HomeScreen from "./Components/HomeScreen";
-import Register from "./Components/Register";
 import Login from "./Components/Login";
-
+import Test from "./Components/Test";
 
 function App() {
   return (
     <div className="App">
         <Login/>
+        {/* <Test/> */}
     </div>
   );
 }

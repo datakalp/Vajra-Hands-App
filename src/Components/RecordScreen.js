@@ -4,7 +4,7 @@ import Video from './Resources/animation.mp4';
 import './RecordScreen.css';
 import {BsRecordCircleFill, BsFillPauseCircleFill, BsFillPlayCircleFill} from 'react-icons/bs'
 import {IoArrowRedoCircleSharp} from 'react-icons/io5'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Header from './Header';
 import * as tf from '@tensorflow/tfjs';
 import * as handpose from '@tensorflow-models/handpose';
@@ -24,21 +24,27 @@ const RecordScreen = () => {
   const videoRef = useRef(null);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const userId = location.state.userId;
 
   const { status, startRecording, stopRecording, pauseRecording, resumeRecording, previewStream, mediaBlobUrl } = useReactMediaRecorder({ video: true , askPermissionOnMount : true});
 
-  useEffect (() => {
-    // Lock the screen orientation to landscape when the component mounts
-    if (window.screen.orientation) {
-      window.screen.orientation.lock("landscape")
-        .then(() => {
-          console.log("Screen orientation locked to landscape");
-        })
-        .catch((error) => {
-          console.error("Failed to lock screen orientation: ", error);
-        });
-    }
-  },[]);
+  // useEffect (() => {
+  //   // Lock the screen orientation to landscape when the component mounts
+  //   if (window.screen.orientation) {
+  //     window.screen.orientation.lock("landscape")
+  //       .then(() => {
+  //         console.log("Screen orientation locked to landscape");
+  //       })
+  //       .catch((error) => {
+  //         console.error("Failed to lock screen orientation: ", error);
+  //       });
+  //   }
+  // },[]);
+
+
+ 
+
 
 
   useEffect(() => {
@@ -70,19 +76,6 @@ const RecordScreen = () => {
   }, [status, previewStream]);
   
 
-  // useEffect(() => {
-  //   intervalRef.current = setInterval(() => {
-  //     console.log("interval running")
-  //     detectHands(previewStream);
-  //   }, 1000);
-  
-  //   return () => {
-  //     clearInterval(intervalRef.current);
-  //   };
-  // }, [status, intervalRef]); // Add intervalRef to dependencies array
-  
-  
-
   const detectHands = async (previewStream) => {
     if (!videoRef.current) {
       return;
@@ -97,10 +90,6 @@ const RecordScreen = () => {
       }
     });
   };
-  
-  // useEffect(() => {
-  //   detectHands(previewStream);
-  // }, [previewStream]);
   
 
   const VideoPreview = ({ stream }) => {
@@ -139,6 +128,49 @@ const RecordScreen = () => {
       }
     </div>);
   }
+
+  async function handleAnalysing() {
+
+    const response = await fetch(mediaBlobUrl);
+    const blob = await response.blob();
+    const formData = new FormData();
+
+    const current = new Date();
+    
+    const videoName = 'video'+Date.parse(current)+'.mp4';
+    formData.append('file', blob, videoName);
+
+    formData.append('user_id', userId);
+    formData.append('device_id', userId+"'s Device");
+    formData.append('timestamp', current);
+    formData.append('app_version', "Employees.Aplha.1");
+
+    const uploadResponse = await fetch('http://40.85.185.144:5000/upload_video', {
+      method: 'POST',
+      body: formData,
+      credentials: 'include'
+
+    });
+
+    const data = await uploadResponse.json();
+    console.log(data);
+
+    if(uploadResponse.ok)
+    {const result = await   fetch("http://40.85.185.144:5000/get_feedback");
+
+      const data = await result.json();
+
+      const results = data.results;
+      
+
+      navigate("/ComplianceScreen", {state:{mediaBlobUrl, results}})
+    }
+    else
+      alert("Could not process your request due to some error");
+
+   
+  }
+  
 
   return (
       <div className='MediaRecorder'>
@@ -192,7 +224,7 @@ const RecordScreen = () => {
               )}
             </div>
         
-        <button disabled = {status==='stopped' ? false : true} onClick={()=>navigate("/ComplianceScreen", {state:{mediaBlobUrl}})} className='startAnalysingButton' style={{fontSize:"large", marginTop:"3vh", fontWeight:'bold'}}>Start Analysing</button>
+        <button disabled = {status==='stopped' ? false : true} onClick={handleAnalysing} className='startAnalysingButton' style={{fontSize:"large", marginTop:"3vh", fontWeight:'bold'}}>Start Analysing</button>
       </div>
   );
 };
