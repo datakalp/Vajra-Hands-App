@@ -145,7 +145,7 @@ const RecordScreen = () => {
     formData.append('timestamp', current);
     formData.append('app_version', "Employees.Aplha.1");
 
-    const uploadResponse = await fetch('http://40.85.185.144:5000/upload_video', {
+    const uploadResponse = await fetch('https://40.85.185.144:5000/upload_video', {
       method: 'POST',
       body: formData,
       credentials: 'include'
@@ -156,7 +156,7 @@ const RecordScreen = () => {
     console.log(data);
 
     if(uploadResponse.ok)
-    {const result = await   fetch("http://40.85.185.144:5000/get_feedback");
+    {const result = await   fetch("https://40.85.185.144:5000/get_feedback");
 
       const data = await result.json();
 
