@@ -74,6 +74,7 @@ const RecordScreen = () => {
       clearInterval(intervalRef.current);
     };
   }, [status, previewStream]);
+
   
 
   const detectHands = async (previewStream) => {
@@ -85,6 +86,12 @@ const RecordScreen = () => {
     model.estimateHands(videoRef.current).then((hands) => {
       if (hands.length > 0) {
         setHandsVisible(true);
+        if (!showCounter) {
+          setShowCounter(true);
+          setCounter(3);
+          setRecording(true);
+          setRedo(false);
+        }
       } else {
         setHandsVisible(false);
       }
@@ -106,28 +113,23 @@ const RecordScreen = () => {
 );
   };
 
-  const Start = () => {
-    return (<div>
-      {
-        showCounter ? (<div className='counter'>{counter}</div>) : 
-        (
-          <button type='button' onClick={() => {
-            if (handsVisible) {
-              clearInterval(intervalRef.current);
-              setShowCounter(true);
-              setCounter(3);
-              setRecording(true);
-              setRedo(false);
-            } else {
-              alert("Please make sure your hands are visible in the video preview before starting the recording.");
-            }
-          }}
-          >
-        <BsRecordCircleFill style={{color : "red"}}/>
-      </button> )
-      }
-    </div>);
-  }
+  // const Start = () => {
+  //   // useEffect(() => {
+  //   //   if (handsVisible) {
+  //   //     setShowCounter(true);
+  //   //     setCounter(3);
+  //   //     setRecording(true);
+  //   //     setRedo(false);
+  //   //   } 
+  //   // }, [handsVisible]);
+  
+  //   return (
+  //     <div>
+  //       {showCounter ? <div className='counter'>{counter}</div> : null}
+  //     </div>
+  //   );
+  // };
+  
 
   async function handleAnalysing() {
 
@@ -221,7 +223,9 @@ const RecordScreen = () => {
                   }
                 </div>
               ) : (
-                <Start/>
+                <div>
+        {showCounter ? <div className='counter'>{counter}</div> : null}
+      </div>
               )}
             </div>
         
