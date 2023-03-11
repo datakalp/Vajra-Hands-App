@@ -113,22 +113,22 @@ const RecordScreen = () => {
 );
   };
 
-  // const Start = () => {
-  //   // useEffect(() => {
-  //   //   if (handsVisible) {
-  //   //     setShowCounter(true);
-  //   //     setCounter(3);
-  //   //     setRecording(true);
-  //   //     setRedo(false);
-  //   //   } 
-  //   // }, [handsVisible]);
+//   const Start = () => {
+//     useEffect(() => {
+//       if (handsVisible) {
+//         setShowCounter(true);
+//         setCounter(3);
+//         setRecording(true);
+//         setRedo(false);
+//       } 
+//     }, [handsVisible]);
   
-  //   return (
-  //     <div>
-  //       {showCounter ? <div className='counter'>{counter}</div> : null}
-  //     </div>
-  //   );
-  // };
+//     return (
+//       <div>
+//         {showCounter ? <div className='counter'>{counter}</div> : null}
+//       </div>
+//     );
+//   };
   
 
   async function handleAnalysing() {
@@ -212,15 +212,15 @@ const RecordScreen = () => {
                   </button>
                 </div>
               ) : status === 'stopped' ? (
-                <div>{
-                  redo ? (<Start/>) : (
+                <div>
+                 
                   <button type='submit' onClick={() => {
                     window.location.reload(false);
                   }}
                   >
                     <IoArrowRedoCircleSharp style={{color : "red"}}/>
-                  </button>)
-                  }
+                  </button>
+                  
                 </div>
               ) : (
                 <div>
