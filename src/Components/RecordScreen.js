@@ -74,6 +74,7 @@ const RecordScreen = () => {
       clearInterval(intervalRef.current);
     };
   }, [status, previewStream]);
+
   
 
   const detectHands = async (previewStream) => {
@@ -85,6 +86,12 @@ const RecordScreen = () => {
     model.estimateHands(videoRef.current).then((hands) => {
       if (hands.length > 0) {
         setHandsVisible(true);
+        if (!showCounter) {
+          setShowCounter(true);
+          setCounter(3);
+          setRecording(true);
+          setRedo(false);
+        }
       } else {
         setHandsVisible(false);
       }
@@ -106,28 +113,23 @@ const RecordScreen = () => {
 );
   };
 
-  const Start = () => {
-    return (<div>
-      {
-        showCounter ? (<div className='counter'>{counter}</div>) : 
-        (
-          <button type='button' onClick={() => {
-            if (handsVisible) {
-              clearInterval(intervalRef.current);
-              setShowCounter(true);
-              setCounter(3);
-              setRecording(true);
-              setRedo(false);
-            } else {
-              alert("Please make sure your hands are visible in the video preview before starting the recording.");
-            }
-          }}
-          >
-        <BsRecordCircleFill style={{color : "red"}}/>
-      </button> )
-      }
-    </div>);
-  }
+//   const Start = () => {
+//     useEffect(() => {
+//       if (handsVisible) {
+//         setShowCounter(true);
+//         setCounter(3);
+//         setRecording(true);
+//         setRedo(false);
+//       } 
+//     }, [handsVisible]);
+  
+//     return (
+//       <div>
+//         {showCounter ? <div className='counter'>{counter}</div> : null}
+//       </div>
+//     );
+//   };
+  
 
   async function handleAnalysing() {
 
@@ -145,7 +147,7 @@ const RecordScreen = () => {
     formData.append('timestamp', current);
     formData.append('app_version', "Employees.Aplha.1");
 
-    const uploadResponse = await fetch('http://40.85.185.144:5000/upload_video', {
+    const uploadResponse = await fetch('https://ee43-40-85-185-144.ngrok.io//upload_video', {
       method: 'POST',
       body: formData,
       credentials: 'include'
@@ -156,9 +158,10 @@ const RecordScreen = () => {
     console.log(data);
 
     if(uploadResponse.ok)
-    {const result = await   fetch("http://40.85.185.144:5000/get_feedback");
+    {
+    // {const result = await   fetch("https://216d-40-85-185-144.ngrok.io/get_feedback");
 
-      const data = await result.json();
+    //   const data = await result.json();
 
       const results = data.results;
       
@@ -209,18 +212,20 @@ const RecordScreen = () => {
                   </button>
                 </div>
               ) : status === 'stopped' ? (
-                <div>{
-                  redo ? (<Start/>) : (
+                <div>
+                 
                   <button type='submit' onClick={() => {
                     window.location.reload(false);
                   }}
                   >
                     <IoArrowRedoCircleSharp style={{color : "red"}}/>
-                  </button>)
-                  }
+                  </button>
+                  
                 </div>
               ) : (
-                <Start/>
+                <div>
+        {showCounter ? <div className='counter'>{counter}</div> : null}
+      </div>
               )}
             </div>
         
